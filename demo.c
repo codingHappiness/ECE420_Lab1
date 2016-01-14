@@ -13,9 +13,9 @@ int thread_count;
 int **A;
 int **B;
 int **C; /* store for results */
-int rootp, n;
-
-int i,j,k;
+int n;
+int a,b;
+int i,k;
 
 void Usage(char* prog_name);
 void *computeCell(void* rank);  /* Thread function */
@@ -35,7 +35,7 @@ int isqrt(unsigned long x) {
 	 while (one != 0) {  
 		  if (op >= res + one) {  
 				op -= res + one;  
-				res += one << 1;  // <-- faster than 2 * one  
+				res += one << 1;
 		  }  
 		  res >>= 1;  
 		  one >>= 2;  
@@ -45,7 +45,7 @@ int isqrt(unsigned long x) {
 
 /*--------------------------------------------------------------------*/
 int main(int argc, char* argv[]) {
-	long		 thread;  /* Use long in case of a 64-bit system */
+	long thread;  /* Use long in case of a 64-bit system */
 	pthread_t* thread_handles; 
 
 	/* Get number of threads from command line */
@@ -58,10 +58,9 @@ int main(int argc, char* argv[]) {
 	Lab1_loadinput(&A, &B, &n);
 
 	C = malloc(n * sizeof(int*));
-   	for (i = 0; i < n; i++)
-	        C[i] = malloc(n * sizeof(int));
-
-	rootp = isqrt(thread_count);
+   	for (i = 0; i < n; i++) {
+		C[i] = malloc(n * sizeof(int));
+	}
 
 	for (thread = 0; thread < thread_count; thread++) {
 		pthread_create(&thread_handles[thread], NULL, computeCell, (void*) thread);
@@ -80,17 +79,13 @@ int main(int argc, char* argv[]) {
 /*-------------------------------------------------------------------*/
 void *computeCell(void* rank) { 
 	long my_rank = (long) rank;
-	int x_start = (my_rank/rootp)* n / rootp;
-	int x_end = (my_rank/rootp + 1) * n / rootp - 1;
-	int y_start = (my_rank%rootp)* n / rootp;
-	int y_end = (my_rank%rootp + 1) * n / rootp - 1;
 
-	for (i = x_start; i <= x_end; i++) {
-		for (j = y_start; j <= y_end; j++) {
-			C[i][j] = 0;
-			for (k = 0; k < n; k++){
-				C[i][j] += A[i][k] * B[k][j];
-			}
+	for (i = my_rank; i < n*n; i += thread_count) {
+		a = i%n;
+		b = i/n;
+		C[a][b] = 0;
+		for (k = 0; k < n; k++){
+			C[a][b] += A[a][k] * B[k][b];
 		}
 	}
 
