@@ -14,7 +14,6 @@ int **A;
 int **B;
 int **C; /* store for results */
 int n;
-int a,b;
 int i,k;
 
 void Usage(char* prog_name);
@@ -79,6 +78,8 @@ int main(int argc, char* argv[]) {
 /*-------------------------------------------------------------------*/
 void *computeCell(void* rank) { 
 	long my_rank = (long) rank;
+
+	int a,b;
 
 	for (i = my_rank; i < n*n; i += thread_count) {
 		a = i%n;
