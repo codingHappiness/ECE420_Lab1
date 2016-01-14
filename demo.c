@@ -15,6 +15,8 @@ int **B;
 int **C; /* store for results */
 int rootp, n;
 
+int i,j,k;
+
 void Usage(char* prog_name);
 void *computeCell(void* rank);  /* Thread function */
 int isqrt(unsigned long x);
@@ -56,7 +58,7 @@ int main(int argc, char* argv[]) {
 	Lab1_loadinput(&A, &B, &n);
 
 	C = malloc(n * sizeof(int*));
-   	for (int i = 0; i < n; i++)
+   	for (i = 0; i < n; i++)
 	        C[i] = malloc(n * sizeof(int));
 
 	rootp = isqrt(thread_count);
@@ -78,14 +80,16 @@ int main(int argc, char* argv[]) {
 /*-------------------------------------------------------------------*/
 void *computeCell(void* rank) { 
 	long my_rank = (long) rank;
-	int x = my_rank/rootp;
-	int y = my_rank%rootp;
+	int x_start = (my_rank/rootp)* n / rootp;
+	int x_end = (my_rank/rootp + 1) * n / rootp - 1;
+	int y_start = (my_rank%rootp)* n / rootp;
+	int y_end = (my_rank%rootp + 1) * n / rootp - 1;
 
-	for (int i = 0; i < x; i++) {
-		for (int j = 0; j < y; j++) {
-			C[i+x][j+y] = 0;
-			for (int k = 0; k < n; k++){
-				C[i+x][j+y] += A[i+x][k] * B[k][j+y];
+	for (i = x_start; i <= x_end; i++) {
+		for (j = y_start; j <= y_end; j++) {
+			C[i][j] = 0;
+			for (k = 0; k < n; k++){
+				C[i][j] += A[i][k] * B[k][j];
 			}
 		}
 	}
