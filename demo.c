@@ -7,7 +7,6 @@
 
 const int MAX_THREADS = 64;
 
-/* Global variable:  accessible to all threads */
 int thread_count;
 
 int **A;
@@ -18,29 +17,6 @@ int i,k;
 
 void Usage(char* prog_name);
 void *computeCell(void* rank);  /* Thread function */
-int isqrt(unsigned long x);
-//int Lab1_loadinput(int ***A, int ***B, int *n);
-
-int isqrt(unsigned long x) {  
-/* From http://www.codecodex.com/wiki/Calculate_an_integer_square_root#C */
-	 register unsigned long op, res, one;  
-
-	 op = x;  
-	 res = 0;  
-
-	 one = 1 << 30;
-	 while (one > op) one >>= 2;  
-
-	 while (one != 0) {  
-		  if (op >= res + one) {  
-				op -= res + one;  
-				res += one << 1;
-		  }  
-		  res >>= 1;  
-		  one >>= 2;  
-	 }  
-	 return res;  
-}  
 
 /*--------------------------------------------------------------------*/
 int main(int argc, char* argv[]) {
