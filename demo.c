@@ -53,18 +53,18 @@ int main(int argc, char* argv[]) {
 
 	thread_handles = malloc (thread_count*sizeof(pthread_t));
 
-	Lab1_loadinput(*A, *B, int *n);
+	Lab1_loadinput(&A, &B, &n);
 	rootp = isqrt(thread_count);
 
 	for (thread = 0; thread < thread_count; thread++) {
-		pthread_create(&thread_handles[thread], NULL, Hello, (void*) thread);
+		pthread_create(&thread_handles[thread], NULL, computeCell, (void*) thread);
 	}
 
 	for (thread = 0; thread < thread_count; thread++) {
 		pthread_join(thread_handles[thread], NULL); 
 	}
 
-	Lab1_saveoutput(C, *n, (double) 0);
+	Lab1_saveoutput(C, &n, (double) 0);
 
 	free(thread_handles);
 	return 0;
@@ -76,11 +76,10 @@ void *computeCell(void* rank) {
 	int x = my_rank/rootp;
 	int y = my_rank%rootp;
 
-	int result;
 	for (int i = 0; i < x; i++) {
 		for (int j = 0; j < y; j++) {
 			C[i][j] = 0;
-			for (k = 0; k < n; k++){
+			for (int k = 0; k < n; k++){
 				C[i+x][j+y] += A[i+x][k] * B[k][j+y];
 			}
 		}
