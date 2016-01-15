@@ -54,6 +54,11 @@ int main(int argc, char* argv[]) {
 	thread_handles = malloc (thread_count*sizeof(pthread_t));
 
 	Lab1_loadinput(&A, &B, &n);
+
+	C = malloc(n * sizeof(int*));
+   	for (int i = 0; i < n; i++)
+	        C[i] = malloc(n * sizeof(int));
+
 	rootp = isqrt(thread_count);
 
 	for (thread = 0; thread < thread_count; thread++) {
@@ -78,7 +83,7 @@ void *computeCell(void* rank) {
 
 	for (int i = 0; i < x; i++) {
 		for (int j = 0; j < y; j++) {
-			C[i][j] = 0;
+			C[i+x][j+y] = 0;
 			for (int k = 0; k < n; k++){
 				C[i+x][j+y] += A[i+x][k] * B[k][j+y];
 			}
