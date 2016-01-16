@@ -14,6 +14,7 @@ int **B;
 int **C; /* store for results */
 int n;
 int i,k;
+double start, end;
 
 void Usage(char* prog_name);
 void *computeCell(void* rank);  /* Thread function */
@@ -32,6 +33,10 @@ int main(int argc, char* argv[]) {
 
 	Lab1_loadinput(&A, &B, &n);
 
+
+	/*Start Timer*/
+	GET_TIME(start);
+
 	C = malloc(n * sizeof(int*));
    	for (i = 0; i < n; i++) {
 		C[i] = malloc(n * sizeof(int));
@@ -45,7 +50,10 @@ int main(int argc, char* argv[]) {
 		pthread_join(thread_handles[thread], NULL); 
 	}
 
-	Lab1_saveoutput(C, &n, (double) 0);
+	/*Stop Timer*/
+	GET_TIME(end);
+
+	Lab1_saveoutput(C, &n, end - start);
 
 	free(thread_handles);
 	return 0;
