@@ -1,1 +1,4 @@
 # ECE420_Lab1
+Mason Strong, Vassili Minaev
+To compile, run "make" or execute the contents of Makefile.
+To run, issue "main n" where 1 <= n <= 64 is the number of threads to use.
