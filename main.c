@@ -13,7 +13,6 @@ int **A;
 int **B;
 int **C; /* store for results */
 int n;
-int i,k;
 double start, end;
 
 void Usage(char* prog_name);
@@ -23,6 +22,7 @@ void *computeCell(void* rank);  /* Thread function */
 int main(int argc, char* argv[]) {
 	long thread;  /* Use long in case of a 64-bit system */
 	pthread_t* thread_handles; 
+	int i;
 
 	/* Get number of threads from command line */
 	if (argc != 2) Usage(argv[0]);
@@ -32,7 +32,6 @@ int main(int argc, char* argv[]) {
 	thread_handles = malloc (thread_count*sizeof(pthread_t));
 
 	Lab1_loadinput(&A, &B, &n);
-
 
 	/*Start Timer*/
 	GET_TIME(start);
@@ -63,14 +62,14 @@ int main(int argc, char* argv[]) {
 void *computeCell(void* rank) { 
 	long my_rank = (long) rank;
 
-	int a,b;
+	int a,b,i,j;
 
 	for (i = my_rank; i < n*n; i += thread_count) {
 		a = i%n;
 		b = i/n;
 		C[a][b] = 0;
-		for (k = 0; k < n; k++){
-			C[a][b] += A[a][k] * B[k][b];
+		for (j = 0; j < n; j++){
+			C[a][b] += A[a][j] * B[j][b];
 		}
 	}
 
