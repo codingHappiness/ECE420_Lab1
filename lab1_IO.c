@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "lab1_IO.h"
 
-int Lab1_loadinput(int ***A, int ***B, int *n)
-{
+int Lab1_loadinput(int ***A, int ***B, int *n) {
 /*
     Allocate memory and load the input data for Lab 1
 
@@ -30,8 +29,7 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
     FILE* ip;
     int i,j;
 
-    if ((ip = fopen("data_input","r")) == NULL)
-    {
+    if ((ip = fopen("data_input","r")) == NULL) {
             printf("error opening the input data.\n");
             return 1;
     }
@@ -40,24 +38,26 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
     *A = malloc(*n * sizeof(int*));
     *B = malloc(*n * sizeof(int*));
 
-    for (i = 0; i < *n; i++)
-    {
+    for (i = 0; i < *n; i++) {
       (*A)[i] = malloc(*n * sizeof(int));
       (*B)[i] = malloc(*n * sizeof(int));
     }
 
-    for (i = 0; i < *n; i++)
-        for (j = 0; j< *n; j++)
+    for (i = 0; i < *n; i++){
+        for (j = 0; j < *n; j++) {
             fscanf(ip, "%d\t", &(*A)[i][j]);
-    for (i = 0; i < *n; i++)
-        for (j = 0; j <* n; j++)
+        }
+    }
+    for (i = 0; i < *n; i++) {
+        for (j = 0; j < *n; j++) {
             fscanf(ip, "%d\t", &(*B)[i][j]);
+        }
+    }
     fclose(ip);
     return 0;
 }
 
-int Lab1_saveoutput(int **C, int *n, double Time)
-{
+int Lab1_saveoutput(int **C, int *n, double Time) {
 /*
     Save the data to the file for Lab 1 
 
@@ -79,17 +79,16 @@ int Lab1_saveoutput(int **C, int *n, double Time)
     FILE* op;
     int i,j;
 
-    if ((op = fopen("data_output","w")) == NULL)
-    {
+    if ((op = fopen("data_output","w")) == NULL) {
         printf("Error opening the output file.\n");
         return 1;
     }
 
     fprintf(op, "%d\n\n", *n);
-    for (i = 0; i <* n; i++)
-    {
-        for (j = 0; j< *n; j++)
+    for (i = 0; i <* n; i++) {
+        for (j = 0; j < *n; j++) {
             fprintf(op, "%d\t", C[i][j]);
+        }
         fprintf(op, "\n");
     }
     fprintf(op, "%f\n", Time);
