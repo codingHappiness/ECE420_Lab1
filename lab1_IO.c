@@ -40,7 +40,7 @@ int Lab1_loadinput(int ***A, int ***B, int *n)
     *A = malloc(*n * sizeof(int*));
     *B = malloc(*n * sizeof(int*));
 
-    for (i = 0; i <= *n; i++)
+    for (i = 0; i < *n; i++)
     {
       (*A)[i] = malloc(*n * sizeof(int));
       (*B)[i] = malloc(*n * sizeof(int));
